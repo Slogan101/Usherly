@@ -1,0 +1,70 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<header class="py-5">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Connect with Professional Ushers, Instantly</h1>
+        <p class="lead text-muted mb-4">The premier platform for hosts to find reliable ushers and for ushers to
+            discover amazing event opportunities.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{% url 'usherly-register' %}" class="btn btn-primary btn-lg px-4 gap-3">Sign Up</a>
+            <a href="{% url 'usherly-login' %}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+        </div>
+    </div>
+</header>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">How It Works</h2>
+            <p class="text-muted">A simple, streamlined process in three easy steps.</p>
+        </div>
+        <div class="row text-center g-4">
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="icon-circle bg-primary text-white mb-3">
+                        <i class="bi bi-person-plus-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold">1. Sign Up</h4>
+                    <p class="text-muted">Create your profile in minutes, whether you're an event host or an usher
+                        looking for work.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="icon-circle bg-primary text-white mb-3">
+                        <i class="bi bi-file-earmark-text-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold">2. Post or Apply</h4>
+                    <p class="text-muted">Hosts post event details and requirements. Ushers browse and apply for
+                        jobs that match their skills.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4">
+                    <div class="icon-circle bg-primary text-white mb-3">
+                        <i class="bi bi-calendar2-check-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold">3. Hire & Get Hired</h4>
+                    <p class="text-muted">Hosts review applications, view profiles with photos, and hire the perfect
+                        team for their event.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="events" class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">Featured Events</h2>
+            <p class="text-muted">Check out some of the exciting opportunities available now.</p>
+        </div>
+        <div id="event-list" class="row g-4">
+        </div>
+        <div class="text-center mt-4">
+            <a href="usher-dashboard.html" class="btn btn-primary">View More Events</a>
+        </div>
+    </div>
+</section>
+{% endblock content%}

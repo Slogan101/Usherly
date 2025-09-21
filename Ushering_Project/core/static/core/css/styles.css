@@ -1,0 +1,130 @@
+/* Custom Styles for UsherConnect */
+
+/* 1. Variables & Global Styles */
+:root {
+    --primary-color: #1D4ED8;
+    --bs-primary-rgb: 29, 78, 216;
+    /* For Bootstrap components */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* 2. Bootstrap Component Overrides */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #1e40af;
+    /* A darker shade of the primary color */
+    border-color: #1e40af;
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.text-primary {
+    color: var(--primary-color) !important;
+}
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.border-primary {
+    border-color: var(--primary-color) !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* 3. Custom Utility Classes */
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+/* 4. Page-Specific Styles */
+
+/* Landing Page Hero */
+header.py-5 {
+    background-color: #ffffff;
+}
+
+/* Landing Page "How It Works" Section */
+.icon-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+}
+
+/* Usher Dashboard - Image Upload */
+.image-upload-slot {
+    border: 2px dashed #ced4da;
+    border-radius: .375rem;
+    position: relative;
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s;
+}
+
+.image-upload-slot:hover {
+    background-color: #e9ecef;
+}
+
+.image-upload-slot img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.image-upload-slot .upload-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+
+.image-upload-slot input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Host Dashboard - Applicant Viewer */
+#applicant-list-container .list-group-item-action {
+    cursor: pointer;
+}
+
+#applicant-list-container .list-group-item-action.active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Make carousel images not too tall */
+#applicant-photo-carousel .carousel-item img {
+    max-height: 75vh;
+    object-fit: contain;
+    width: 100%;
+}

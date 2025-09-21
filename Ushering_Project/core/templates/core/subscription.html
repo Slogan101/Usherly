@@ -1,0 +1,68 @@
+{% extends 'core/base.html' %}
+{% block content %}
+<!-- Write an if statement to find out if the user is autheticated or not and then display a change in the (Unlock potential to something that would ginger to subscribe) -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Unlock Your Potential</h1>
+            <p class="lead text-muted">Choose a plan that gives your profile the visibility it deserves.</p>
+        </div>
+
+        <div class="row justify-content-center g-4">
+            <div class="col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h3 class="card-title">Basic</h3>
+                        <p class="display-4 fw-bold">₦2,000<span class="text-muted fs-5">/mo</span></p>
+                        <p class="text-muted">Get featured and increase your chances of getting hired.</p>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Apply to
+                                unlimited events</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Featured
+                                Profile Badge</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Higher search
+                                ranking</li>
+                        </ul>
+                        <button class="btn btn-outline-primary mt-auto subscription-btn" data-tier="basic"
+                            data-amount="2000">Choose Basic Plan</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card h-100 border-primary shadow">
+                    <div class="card-header bg-primary text-white text-center fw-bold">Most Popular</div>
+                    <div class="card-body p-4 d-flex flex-column">
+                        <h3 class="card-title">Pro</h3>
+                        <p class="display-4 fw-bold">₦5,000<span class="text-muted fs-5">/mo</span></p>
+                        <p class="text-muted">Maximum visibility and priority access for serious professionals.</p>
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>All Basic
+                                features, plus:</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i><strong>Priority
+                                    Listing</strong> above others</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Early access
+                                to new listings</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i>Direct support
+                            </li>
+                        </ul>
+                        <button class="btn btn-primary mt-auto subscription-btn" data-tier="pro"
+                            data-amount="5000">Choose Pro Plan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="app-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Usherly</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+        </div>
+    </div>
+</div>
+{% endblock content %}

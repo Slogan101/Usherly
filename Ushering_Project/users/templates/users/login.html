@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-6 col-lg-4">
+            <div class="text-center mb-4">
+                <a class="navbar-brand fw-bold text-primary fs-3" href="{% url 'usherly-home' %}">
+                    <img src="assets/icon.svg" alt="Usherly Logo" width="36" height="30"
+                        class="d-inline-block align-text-top">
+                    Usherly
+                </a>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h3 class="card-title text-center mb-4">Welcome Back!</h3>
+                    <form id="login-form" method="POST" novalidate>
+                        {% csrf_token %}
+                        <div id="login-alert" class="alert alert-danger d-none" role="alert"></div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="email" name="username" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                            <div class="invalid-feedback">Password is required.</div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Don't have an account? <a href="{% url 'usherly-register' %}">Sign Up</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

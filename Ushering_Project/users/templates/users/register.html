@@ -1,0 +1,95 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row justify-content-center align-items-center min-vh-100">
+        <div class="col-md-8 col-lg-6">
+            <div class="text-center mb-4">
+                <a class="navbar-brand fw-bold text-primary fs-3" href="{% url 'usherly-home' %}">
+                    <img src="assets/icon.svg" alt="Usherly Logo" width="36" height="30"
+                        class="d-inline-block align-text-top">
+                    Usherly
+                </a>
+            </div>
+            <div class="card shadow-sm">
+                <div class="card-body p-4 p-md-5">
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        <ul>
+                            {% for field in form %}
+                            {% for error in field.errors %}
+                            <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                            {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <h3 class="card-title text-center mb-4">Create Your Account</h3>
+                    <form id="signup-form" method="POST" novalidate>
+                        {% csrf_token %}
+                        <div id="signup-alert" class="alert alert-danger d-none" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label">I am a...</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="user_type" id="roleUsher"
+                                    value="usher" checked>
+                                <label class="form-check-label" for="roleUsher">Usher (Looking for work)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="user_type" id="roleHost"
+                                    value="host">
+                                <label class="form-check-label" for="roleHost">Host (Hiring for an event)</label>
+                            </div>
+                        </div>
+
+                        <!-- <div id="host-fields" class="mb-3 d-none">
+                            <label for="organization" class="form-label">Organization (Optional)</label>
+                            <input type="text" class="form-control" id="organization" name="organization">
+                        </div> -->
+
+                        <div class="mb-3">
+                            <label for="fullname" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" name="full_name" required>
+                            <div class="invalid-feedback">Full name is required.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="invalid-feedback">Please enter a valid email.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <div class="invalid-feedback">A valid phone number is required.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password1" required
+                                minlength="8">
+                            <div class="invalid-feedback">Password must be at least 8 characters.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm-password" class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirm-password" name="password2" required>
+                            <div class="invalid-feedback">Passwords do not match.</div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Create Account</button>
+                        </div>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Already have an account? <a
+                                href="{% url 'usherly-login' %}">Login</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
