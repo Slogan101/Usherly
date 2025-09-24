@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth import get_user_model
 from .managers import CustomUserManager
+from utils.choices import USER_TYPES
 from PIL import Image
 
 
@@ -12,11 +13,7 @@ from PIL import Image
 
 
 
-class CustomUser(AbstractUser):
-    USER_TYPES = (
-        ('usher', 'Usher'),
-        ('host', 'Host'),
-    )
+class CustomUser(AbstractUser):  
     username = None
     email = models.EmailField(unique=True)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

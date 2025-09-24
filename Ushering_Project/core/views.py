@@ -1,10 +1,14 @@
 from django.shortcuts import render
+from eventhub.models import Events
 
 # Create your views here.
 
 
 def home(request):
-    return render(request, 'core/home.html')
+    event = Events.objects.all()[:6]
+
+    return render(request, 'core/home.html', {'events': event})
+
 
 def about(request):
     return render(request, 'core/about.html', {'title':'About'})

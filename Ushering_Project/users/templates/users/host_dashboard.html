@@ -1,4 +1,5 @@
-{% extends 'users/dash_base.html' %}
+{% extends 'core/base.html' %}
+{% load static %}
 {% block content %}
 
 <main class="container py-5">
@@ -7,43 +8,102 @@
             <div id="post-event" class="card">
                 <div class="card-body p-4">
                     <h3 class="card-title mb-4">Post a New Event</h3>
-                    <form id="post-event-form" novalidate>
+                    <form id="post-event-form" enctype="multipart/form-data" method="POST" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="eventImage" class="form-label">Event Banner</label>
+                            <input type="file" name="event_image" class="form-control" id="eventImage" accept="image/*">
+
+                            <!-- Image preview box -->
+                            <div class="mt-3">
+                                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid rounded d-none"
+                                    style="max-height: 200px; object-fit: cover; width: 100%;">
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <label for="eventTitle" class="form-label">Event Title</label>
-                            <input type="text" class="form-control" id="eventTitle" required>
+                            <input type="text" name="title" class="form-control" id="eventTitle" required>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="eventType" class="form-label">Event Type</label>
-                                <select id="eventType" class="form-select" required>
+                                <select id="eventType" name="event_type" class="form-select" required>
                                     <option value="corporate">Corporate</option>
                                     <option value="wedding">Wedding</option>
                                     <option value="concert">Concert</option>
+                                    <option value="burial">Burial/Funeral</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="conference">Conference</option>
+                                    <option value="religious">Religious</option>
+                                    <option value="school">School/Campus</option>
                                     <option value="private">Private Party</option>
+                                    <option value="entertainment">Entertainment</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label for="eventLocation" class="form-label">Location</label>
-                                <input type="text" class="form-control" id="eventLocation" required>
+
+                                <select name="state" class="form-select" required>
+                                    <option value="abia">Abia</option>
+                                    <option value="adamawa">Adamawa</option>
+                                    <option value="akwa_ibom">Akwa Ibom</option>
+                                    <option value="anambra">Anambra</option>
+                                    <option value="bauchi">Bauchi</option>
+                                    <option value="bayelsa">Bayelsa</option>
+                                    <option value="benue">Benue</option>
+                                    <option value="borno">Borno</option>
+                                    <option value="cross_river">Cross River</option>
+                                    <option value="delta">Delta</option>
+                                    <option value="ebonyi">Ebonyi</option>
+                                    <option value="edo">Edo</option>
+                                    <option value="ekiti">Ekiti</option>
+                                    <option value="enugu">Enugu</option>
+                                    <option value="gombe">Gombe</option>
+                                    <option value="imo">Imo</option>
+                                    <option value="jigawa">Jigawa</option>
+                                    <option value="kaduna">Kaduna</option>
+                                    <option value="kano">Kano</option>
+                                    <option value="katsina">Katsina</option>
+                                    <option value="kebbi">Kebbi</option>
+                                    <option value="kogi">Kogi</option>
+                                    <option value="kwara">Kwara</option>
+                                    <option value="lagos">Lagos</option>
+                                    <option value="nasarawa">Nasarawa</option>
+                                    <option value="niger">Niger</option>
+                                    <option value="ogun">Ogun</option>
+                                    <option value="ondo">Ondo</option>
+                                    <option value="osun">Osun</option>
+                                    <option value="oyo">Oyo</option>
+                                    <option value="plateau">Plateau</option>
+                                    <option value="rivers">Rivers</option>
+                                    <option value="sokoto">Sokoto</option>
+                                    <option value="taraba">Taraba</option>
+                                    <option value="yobe">Yobe</option>
+                                    <option value="zamfara">Zamfara</option>
+                                    <option value="fct">FCT - Abuja</option>
+                                </select>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="eventDate" class="form-label">Date & Time</label>
-                            <input type="datetime-local" class="form-control" id="eventDate" required>
+                            <input type="datetime-local" name="event_date" class="form-control" id="eventDate" required>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label for="durationHours" class="form-label">Duration (hours)</label>
-                                <input type="number" class="form-control" id="durationHours" min="1" required>
+                                <input type="number" name="event_duration" class="form-control" id="durationHours"
+                                    min="1" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="payAmount" class="form-label">Pay per Usher (₦)</label>
-                                <input type="number" class="form-control" id="payAmount" min="0" required>
+                                <input type="number" name="pay_amount" class="form-control" id="payAmount" min="0"
+                                    required>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label for="eventDescription" class="form-label">Description</label>
-                            <textarea id="eventDescription" class="form-control" rows="4" required></textarea>
+                            <textarea id="eventDescription" name="event_description" class="form-control" rows="4"
+                                required></textarea>
                         </div>
                         <hr>
                         <h5 class="mb-3">Booking Details</h5>
@@ -67,7 +127,6 @@
                             <small class="text-muted mt-2">This is a one-time fee to post your event and access
                                 applicants.</small>
                         </div>
-
                         <div class="d-grid mt-4">
                             <button type="submit" class="btn btn-primary btn-lg">Pay & Post Event</button>
                         </div>
@@ -79,36 +138,40 @@
         <div class="col-lg-7">
             <div id="my-events">
                 <h2 class="mb-4">My Events</h2>
-                <div id="host-event-list" class="vstack gap-3">
+                {% if events %}
+                <div class="vstack gap-3">
+                    {% for event in events %}
+                    <div class="card">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="card-title mb-1">{{ event.title }}</h5>
+                                <p class="card-text text-muted mb-0">
+                                    {{ event.event_date|date:"D M d Y" }} &bull; {{ event.get_state_display }}, Nigeria
+                                </p>
+                            </div>
+                            <button class="btn btn-primary view-applicants-btn" data-event-id="{{ event.id }}"
+                                data-event-title="{{ event.title }}">
+                                View Applicants <span class="badge bg-light text-dark">event applicants</span>
+                            </button>
+
+                        </div>
+
+                    </div>
+                    {% endfor %}
                 </div>
+
+                {% else %}
+                <div id="host-event-list" class="vstack gap-3">
+                    <div class="text-center p-5 card" id="no-events-placeholder">
+                        <p class="text-muted">You have not posted any events yet. Use the form to create
+                            one.</p>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </main>
-
-<div class="modal fade" id="applicantsModal" tabindex="-1" aria-labelledby="applicantsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-fullscreen">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="applicantsModalLabel">Applicants for <span id="modal-event-title"></span>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row h-100">
-                    <div class="col-lg-3 border-end h-100 overflow-auto" id="applicant-list-container">
-                    </div>
-                    <div class="col-lg-9 h-100 overflow-auto d-flex flex-column" id="applicant-details-container">
-                        <div class="text-center p-5">
-                            <p class="text-muted">Select an applicant from the left to view their details and
-                                photos.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
     <div id="app-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -116,9 +179,31 @@
             <strong class="me-auto">Usherly</strong>
             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
         </div>
-        <div class="toast-body">
-        </div>
+        <div class="toast-body"></div>
     </div>
 </div>
+
+<script>
+    const imageInput = document.getElementById('eventImage');
+    const imagePreview = document.getElementById('imagePreview');
+
+    imageInput.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.addEventListener('load', function () {
+                imagePreview.src = reader.result;
+                imagePreview.classList.remove('d-none');
+            });
+
+            reader.readAsDataURL(file);
+        } else {
+            imagePreview.src = '#';
+            imagePreview.classList.add('d-none');
+        }
+    });
+</script>
 
 {% endblock content %}

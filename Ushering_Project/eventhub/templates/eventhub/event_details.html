@@ -1,0 +1,56 @@
+{% extends 'core/base.html' %}
+{% block content%}
+
+
+<main class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-8">
+            <h1 class="fw-bold mb-3" id="event-detail-title">{{ event.title }}</h1>
+            <div class="d-flex align-items-center text-muted mb-4">
+                <span class="badge bg-primary me-3 fs-6" id="event-detail-type">{{ event.get_event_type_display }}</span>
+                <span><i class="bi bi-geo-alt-fill me-1"></i><span id="event-detail-location">{{ event.get_state_display }},  Nigeria</span></span>
+            </div>
+            <img src="{{ event.event_image.url }}" class="img-fluid rounded mb-4" alt="Event Image">
+
+            <h4 class="fw-bold">Event Description</h4>
+            <p id="event-detail-description">
+                {{ event.event_description }}
+            </p>
+        </div>
+        <div class="col-lg-4">
+            <div class="card" style="top: 100px;">
+                <div class="card-body">
+                    <h4 class="card-title fw-bold">Event Details</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Date:</strong> <span id="event-detail-date">{{ event.event_date|date:"M d, Y" }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Time:</strong> <span id="event-detail-time">{{ event.event_date|time:"g:i A" }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Duration:</strong> <span id="event-detail-duration">{{ event.event_duration }} Hours</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Pay:</strong> <span class="fw-bold text-success fs-5"
+                                id="event-detail-pay">₦{{ event.pay_amount }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <strong>Host:</strong> <span id="event-detail-host">{{ event.host.user.full_name }}</span>
+                        </li>
+                    </ul>
+                    <div class="d-grid mt-3">
+                        <a href="usher-dashboard.html" class="btn btn-primary btn-lg">Apply Now</a>
+                    </div>
+                    {% if not user.is_authenticated %}
+                    <p class="text-center text-muted small mt-2">You must be logged in as an usher to apply.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+{% endblock %}
