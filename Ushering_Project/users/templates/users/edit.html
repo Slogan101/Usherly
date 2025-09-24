@@ -1,0 +1,132 @@
+{% extends 'users/dash_base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'users/css/edit.css' %}">
+{% endblock %}
+{% block content %}
+
+<body>
+
+    <div class="container mt-5" style="max-width: 900px;">
+        <h2 class="mb-4 text-center">Edit Your Profile</h2>
+
+        <form id="profile-edit-form" enctype="multipart/form-data" method="POST">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="profileName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="profileName" name="full_name" value="Esther Howard"
+                        disabled>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="profileEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="profileEmail" name="email" value="esther.h@example.com"
+                        disabled>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profilePhone" class="form-label">Phone</label>
+                    <input type="text" class="form-control" id="profilePhone" name="phone" value="08012345678">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileAge" class="form-label">Age</label>
+                    <input type="number" class="form-control" id="profileAge" name="age" value="24">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileHeight" class="form-label">Height (e.g., 5'8")</label>
+                    <input type="text" class="form-control" id="profileHeight" name="height" value="5'8&quot;">
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileComplexion" class="form-label">Complexion</label>
+                    <input type="text" class="form-control" id="profileComplexion" name="complexion" value="Fair">
+                </div>
+
+                <div class="col-8">
+                    <label for="profileBio" class="form-label">Bio</label>
+                    <textarea class="form-control" id="profileBio" name="bio"
+                        rows="3">Professional and punctual usher with 3+ years of experience...</textarea>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h6 class="fw-bold">Upload 4 Full-Length Photos</h6>
+            <p class="text-muted small">This is required for hosts to see you. Please upload 4 clear, full-length
+                images. (JPG/PNG, max 5MB each).</p>
+
+            <div class="alert alert-danger d-none" id="image-upload-error"></div>
+
+            <div class="row g-3" id="image-upload-container">
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-1" class="image-upload-slot">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                            alt="Photo 1 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Photo 1</span>
+                        </div>
+                        <input type="file" id="photo-input-1" name="photo1" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-2" class="image-upload-slot">
+                        <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                            alt="Photo 2 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Photo 2</span>
+                        </div>
+                        <input type="file" id="photo-input-2" name="photo2" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-1" class="image-upload-slot">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                            alt="Photo 1 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Photo 1</span>
+                        </div>
+                        <input type="file" id="photo-input-1" name="photo1" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-2" class="image-upload-slot">
+                        <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=600"
+                            alt="Photo 2 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Photo 2</span>
+                        </div>
+                        <input type="file" id="photo-input-2" name="photo2" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+            </div>
+
+            <div class="mt-4 text-end">
+                <a href="#" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+        <script src="{% static 'users/js/usher_dashboard.js' %}"></script>
+
+        <script>
+            
+        </script>
+
+</body>
+
+{% endblock content %}

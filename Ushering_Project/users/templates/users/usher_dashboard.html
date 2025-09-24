@@ -1,0 +1,132 @@
+{% extends 'users/dash_base.html' %}
+{% load static %}
+{% block content %}
+
+<body>
+    
+    <main class="container py-5">
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-body text-center">
+                    <img src="{{ user.usher_profile.profile_picture.url }}" alt="Profile Picture" class="rounded-circle mb-3"
+                        width="120" height="120">
+                    <h4 class="card-title">{{ user.full_name }}</h4>
+                    <p class="text-muted">{{ user.email }}</p>
+                    <hr>
+                    <ul class="list-unstyled text-start">
+                        <li><strong>Age:</strong> {{ user.usher_profile.age }}</li>
+                        <li><strong>Height:</strong> {{ user.usher_profile.height }}</li>
+                        <li><strong>Complexion:</strong> {{ user.usher_profile.complexion }}</li>
+                        <li><strong>Bio:</strong> {{ user.usher_profile.bio }}</li>
+                    </ul>
+                    <form id="upload-form" method="POST" action="{% url 'upload_profile_picture' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="file" id="profile-picture-input" name="profile_picture" accept="image/*" hidden>
+                    
+                        <button type="button" class="btn btn-primary w-100"
+                            onclick="document.getElementById('profile-picture-input').click()">
+                            <i class="bi bi-upload"></i> New Profile Picture
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">My Subscription</h5>
+                    <p>Current Plan: <span class="badge bg-success">PRO</span></p>
+                    <p class="text-muted small">Your profile is getting priority listing in search results.</p>
+                    <a href="{% url 'usherly-subscribe' %}" class="btn btn-outline-primary w-100">Manage Subscription</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <!-- <div id="available-events">
+                <h2 class="mb-4">Available Events</h2>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" placeholder="Location (e.g., Abuja)">
+                            </div>
+                            <div class="col-md-4">
+                                <select class="form-select">
+                                    <option selected>All Event Types</option>
+                                    <option value="corporate">Corporate</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="concert">Concert</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="number" class="form-control" placeholder="Min Pay (₦)">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div id="dashboard-event-list" class="row g-4">
+                </div>
+            </div> -->
+
+            <!-- <hr class="my-5"> -->
+
+            <div id="my-applications">
+                <h2 class="mb-4">My Applications</h2>
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-nowrap mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col">Event Title</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Host</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="applications-table-body">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+
+<div class="modal fade" id="applyConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Application</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to apply for <strong id="apply-event-title">this event</strong>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm-apply-btn">Yes, Apply</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="app-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Usherly</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'users/js/usher_dashboard.js' %}"></script>
+</body>
+
+
+{% endblock content %}

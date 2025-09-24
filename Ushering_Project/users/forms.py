@@ -35,19 +35,37 @@ class UserRegistrationForm(UserCreationForm):
             phone = self.cleaned_data['phone']
 
             if user.user_type == 'usher':
-                UsherProfile.objects.create(
-                    user = user,
-                    phone = phone,
-                )
+                profile, _ = UsherProfile.objects.get_or_create(user=user)
+                profile.phone = phone
+                profile.save()
+                # user.usher_profile.phone = phone
+                # user.usher_profile.save()
+
             elif user.user_type == 'host':
-                HostProfile.objects.create(
-                    user = user,
-                    phone = phone,
-                )
-        return user
+                profile, _ = HostProfile.objects.get_or_create(user=user)
+                profile.phone = phone
+                profile.save()
+                # user.host_profile.phone = phone
+                # user.host_profile.save()
+        #         UsherProfile.objects.create(
+        #             user = user,
+        #             phone = phone,
+        #         )
+        #     elif user.user_type == 'host':
+        #         HostProfile.objects.create(
+        #             user = user,
+        #             phone = phone,
+        #         )
+        # return user
     
 
 
 
 class LoginForm(AuthenticationForm):
     username = forms.EmailField(label="Email", widget=forms.EmailInput(attrs={"class": "form-control", "placeholder": "Email"}))
+
+
+class UsherUpdateForm(forms.ModelForm):
+    class Meta:
+        model = UsherProfile
+        fields = ['age', 'height', 'phone', 'complexion', 'bio', 'profile_picture', 'photo_1', 'photo_2', 'photo_3', 'photo_4']

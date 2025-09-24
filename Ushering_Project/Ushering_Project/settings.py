@@ -126,9 +126,10 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL='/media/'
+DEBUG = True
 
 
-LOGIN_REDIRECT_URL = 'usherly-home'
+# LOGIN_REDIRECT_URL = 'usherly-home'
 LOGOUT_REDIRECT_URL = 'usherly-home'
 LOGIN_URL = "usherly-login"
 # Default primary key field type

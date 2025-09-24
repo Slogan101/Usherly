@@ -1,0 +1,41 @@
+/* Usher Dashboard - Image Upload Slots */
+.image-upload-slot {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* Creates a perfect square */
+    border: 2px dashed #ced4da;
+    border-radius: .375rem;
+    /* Bootstrap's default border radius */
+    cursor: pointer;
+    background-color: #f8f9fa;
+    transition: background-color 0.2s, border-color 0.2s;
+    overflow: hidden;
+    /* Ensures the preview image doesn't overflow the rounded corners */
+}
+
+.image-upload-slot:hover {
+    background-color: #e9ecef;
+    border-color: #adb5bd;
+}
+
+.image-upload-slot .upload-prompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6c757d;
+    /* Bootstrap's muted text color */
+}
+
+.image-upload-slot .image-preview {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Ensures the image covers the slot without distortion */
+}

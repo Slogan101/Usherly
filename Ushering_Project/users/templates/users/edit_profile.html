@@ -1,0 +1,244 @@
+{% extends 'users/dash_base.html' %}
+{% load static %}
+{% block css%}
+<link rel="stylesheet" href="{% static 'users/css/edit.css' %}">
+{% endblock %}
+{% block content %}
+
+<body>
+
+    <div class="container mt-5" style="max-width: 900px;">
+        <h2 class="mb-4 text-center">Edit Your Profile</h2>
+
+        <form id="profile-edit-form" enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label for="profileName" class="form-label">Full Name</label>
+                    {% if user.full_name %}
+                    <input type="text" class="form-control" id="profileName" name="full_name"
+                        value="{{ user.full_name }}" disabled>
+                    {% else %}
+                    <input type="text" class="form-control" id="profileName" name="full_name" value="Esther Howard"
+                        disabled>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-6">
+                    <label for="profileEmail" class="form-label">Email</label>
+                    {% if user.email %}
+                    <input type="email" class="form-control" id="profileEmail" name="email" value="{{ user.email }}"
+                        disabled>
+                    {% else %}
+                    <input type="email" class="form-control" id="profileEmail" name="email" value="esther.h@example.com"
+                        disabled>
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profilePhone" class="form-label">Phone</label>
+                    {% if user.usher_profile.phone %}
+                    <input type="text" class="form-control" id="profilePhone" name="phone"
+                        value="{{ user.usher_profile.phone }}">
+                    {% else %}
+                    <input type="text" class="form-control" id="profilePhone" name="phone" value="08012345678">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileAge" class="form-label">Age</label>
+                    {% if user.usher_profile.age %}
+                    <input type="number" class="form-control" id="profileAge" name="age"
+                        value="{{ user.usher_profile.age }}">
+                    {% else %}
+                    <input type="number" class="form-control" id="profileAge" name="age" value="24">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileHeight" class="form-label">Height</label>
+                    {% if user.usher_profile.height %}
+                    <input type="text" class="form-control" id="profileHeight" name="height"
+                        value="{{ user.usher_profile.height }}">
+                    {% else %}
+                    <input type="number" class="form-control" id="profileHeight" name="height" value="5.8">
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4">
+                    <label for="profileComplexion" class="form-label">Complexion</label>
+                    {% if user.usher_profile.complexion %}
+                    <input type="text" class="form-control" id="profileComplexion" name="complexion"
+                        value="{{ user.usher_profile.complexion }}">
+                    {% else %}
+                    <input type="text" class="form-control" id="profileComplexion" name="complexion" value="Fair">
+                    {% endif %}
+                </div>
+
+                <div class="col-8">
+                    <label for="profileBio" class="form-label">Bio</label>
+                    {% if usher.usher_profile.bio %}
+                    <textarea class="form-control" id="profileBio" name="bio"
+                        rows="3">{{ user.usher_profile.bio }}</textarea>
+                    {% else %}
+                    <textarea class="form-control" id="profileBio" name="bio"
+                        rows="3">Professional and punctual usher with 3+ years of experience...</textarea>
+                    {% endif %}
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <h6 class="fw-bold">Upload 4 Full-Length Photos</h6>
+            <p class="text-muted small">This is required for hosts to see you. Please upload 4 clear, full-length
+                images. (JPG/PNG, max 5MB each).</p>
+
+            <div class="alert alert-danger d-none" id="image-upload-error"></div>
+
+            <div class="row g-3" id="image-upload-container">
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-1" class="image-upload-slot ratio ratio-1x1">
+                        {% if user.usher_profile.photo_1 %}
+                        <img src="{{ user.usher_profile.photo_1.url }}" alt="Photo 1 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 1</span>
+                        </div>
+                        {% else %}
+                        <img src="" alt="" class="image-preview d-none">
+                        {% endif %}
+                        <input type="file" id="photo-input-1" name="photo_1" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-2" class="image-upload-slot ratio ratio-1x1">
+                        {% if user.usher_profile.photo_2 %}
+                        <img src="{{ user.usher_profile.photo_2.url }}" alt="Photo 2 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 2</span>
+                        </div>
+                        {% else %}
+                        <img src="" alt="" class="image-preview d-none">
+                        <div class="upload-prompt">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 2</span>
+                        </div>
+                        {% endif %}
+                        <input type="file" id="photo-input-2" name="photo_2" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-3" class="image-upload-slot ratio ratio-1x1">
+                        {% if user.usher_profile.photo_3 %}
+                        <img src="{{ user.usher_profile.photo_3.url }}" alt="Photo 3 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 3</span>
+                        </div>
+                        {% else %}
+                        <img src="" alt="Photo 3 preview" class="image-preview d-none">
+                        <div class="upload-prompt">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 3</span>
+                        </div>
+                        {% endif %}
+                        <input type="file" id="photo-input-3" name="photo_3" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+
+
+
+                <div class="col-6 col-md-3">
+                    <label for="photo-input-4" class="image-upload-slot ratio ratio-1x1">
+                        {% if user.usher_profile.photo_4 %}
+                        <img src="{{ user.usher_profile.photo_4.url }}" alt="Photo 4 preview" class="image-preview">
+                        <div class="upload-prompt d-none">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 4</span>
+                        </div>
+                        {% else %}
+                        <img src="" alt="Photo 4 preview" class="image-preview d-none">
+                        <div class="upload-prompt">
+                            <i class="bi bi-camera fs-2"></i>
+                            <span>Slot 4</span>
+                        </div>
+                        {% endif %}
+                        <input type="file" id="photo-input-4" name="photo_4" class="d-none image-upload-input"
+                            accept="image/jpeg, image/png">
+                    </label>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="mt-4 text-end">
+                <a href="{% url 'usherly-usher' %}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- <script src="{% static 'users/js/usher_dashboard.js' %}"></script> -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+    const profileForm = document.getElementById('profile-edit-form');
+    if (profileForm) {
+
+        // --- Logic for Live Image Preview ---
+        const imageInputs = document.querySelectorAll('.image-upload-input');
+        imageInputs.forEach(input => {
+            input.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const slot = event.target.closest('.image-upload-slot');
+                const preview = slot.querySelector('.image-preview');
+                const prompt = slot.querySelector('.upload-prompt');
+                const errorDiv = document.getElementById('image-upload-error');
+
+                // Client-Side Validation
+                if (!['image/jpeg', 'image/png'].includes(file.type)) {
+                    errorDiv.textContent = 'Invalid file type. Please upload a JPG or PNG image.';
+                    errorDiv.classList.remove('d-none');
+                    event.target.value = ''; // Clear the invalid selection
+                    return;
+                }
+                if (file.size > 5 * 1024 * 1024) { // 5MB
+                    errorDiv.textContent = 'File is too large. Maximum size is 5MB.';
+                    errorDiv.classList.remove('d-none');
+                    event.target.value = ''; // Clear the invalid selection
+                    return;
+                }
+                errorDiv.classList.add('d-none');
+
+                // Show Preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    prompt.classList.add('d-none');
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+});
+
+    </script>
+
+</body>
+
+{% endblock content %}
