@@ -40,10 +40,20 @@
                             <strong>Host:</strong> <span id="event-detail-host">{{ event.host.user.full_name }}</span>
                         </li>
                     </ul>
-                    <div class="d-grid mt-3">
-                        <a href="{% url 'usherly-apply' event.id %}" class="btn btn-primary btn-lg">Apply Now</a>
-                    </div>
-                    {% if not user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        {% if application %}
+                            <div class="d-grid mt-3">
+                                <button class="btn btn-secondary btn-lg" disabled>
+                                    {{ application.status|capfirst }}
+                                </button>
+                            </div>
+                        {% else %}
+                            <div class="d-grid mt-3">
+                                <a href="{% url 'usherly-apply' event.id %}" class="btn btn-primary btn-lg">Apply Now</a>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                    
                     <p class="text-center text-muted small mt-2">You must be logged in as an usher to apply.</p>
                     {% endif %}
                 </div>
