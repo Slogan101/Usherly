@@ -86,7 +86,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="eventDate" class="form-label">Date & Time</label>
-                            <input type="datetime-local" name="event_date" class="form-control" id="eventDate" required>
+                            <input type="datetime-local" name="event_date" min="{{ now|date:'Y-m-d\TH:i' }}"
+                                class="form-control" id="eventDate" required>
                         </div>
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
@@ -141,22 +142,40 @@
                 {% if events %}
                 <div class="vstack gap-3">
                     {% for event in events %}
-                    <div class="card">
-                        <div class="card-body d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="card-title mb-1">{{ event.title }}</h5>
-                                <p class="card-text text-muted mb-0">
-                                    {{ event.event_date|date:"D M d Y" }} &bull; {{ event.get_state_display }}, Nigeria
-                                </p>
+                    <div class="card event-card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title mb-1">{{ event.title }} </h5>
+                                    <p class="card-text text-muted mb-2">
+                                        <i class="bi bi-calendar"></i> {{ event.event_date|date:"D M d Y" }} &bull;
+                                        <i class="bi bi-geo-alt"></i> {{ event.get_state_display }}, Nigeria
+                                    </p>
+                                    {% if event.applicant_count > 1 %}
+                                    <span class="badge bg-info">{{ event.applicant_count }} Applicants</span>
+                                    {% else %}
+                                    <span class="badge bg-info">{{ event.applicant_count }} Applicant</span>
+                                    {% endif %}
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li>
+                                            <a class="dropdown-item" href="{% url 'usherly-applicants' event.id %}">
+                                                <i class="bi bi-people-fill me-2"></i>View Applicants
+                                            </a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-fill me-2"></i>Edit Event</a></li>
+                                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash-fill me-2"></i>Delete
+                                                Event</a></li>
+                                    </ul>
+                                </div>
                             </div>
-                            <button class="btn btn-primary view-applicants-btn" data-event-id="{{ event.id }}"
-                                data-event-title="{{ event.title }}">
-                                View Applicants <span class="badge bg-light text-dark">event applicants</span>
-                            </button>
-
                         </div>
-
                     </div>
+                    
                     {% endfor %}
                 </div>
 

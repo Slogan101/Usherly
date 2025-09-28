@@ -1,0 +1,120 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+
+
+
+<div class="container mt-3">
+        <a href="host-dashboard.html" class="btn btn-outline-primary ms-auto">
+            <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+        </a>
+    </div>
+
+
+<main class="container py-5">
+    <h2 class="mb-4">Applicants for {{ event.title }}</h2>
+    
+
+    <div class="vstack gap-4">
+        {% for applicant in applicants %}
+
+        <div class="card shadow-sm">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <img src="{{ applicant.usher.profile_picture.url }}" class="rounded-circle me-3" alt="Applicant Name"
+                        style="width: 70px; height: 70px; object-fit: cover;">
+
+                    <div class="flex-grow-1">
+                        <h5 class="card-title mb-1">{{ applicant.usher.user.full_name }}</h5>
+                        <p class="card-text text-muted mb-2">
+                            Age: {{ applicant.usher.age }} &bull; Height: {{ applicant.usher.height }} &bull; Complexion: {{ applicant.usher.complexion }}
+                        </p>
+                        <p class="card-text small mb-0 d-none d-md-block">
+                            {{ applicant.usher.bio }}
+                        </p>
+                    </div>
+
+                    <div class="ms-3">
+                        <a href="{% url 'usherly-applicant-detail' event.id applicant.id %}" class="btn btn-primary">
+                            View Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        
+
+        
+    </div>
+</main>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="app-toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">Usherly</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body"></div>
+    </div>
+</div> -->
+
+
+
+{% endblock content %}

@@ -59,3 +59,10 @@ USER_TYPES = (
         ('usher', 'Usher'),
         ('host', 'Host'),
     )
+
+
+STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    )

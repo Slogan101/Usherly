@@ -6,6 +6,9 @@ from django.contrib import messages
 from .models import UsherProfile, HostProfile
 from eventhub.forms import CreateEventForm
 from eventhub.models import Events
+from django.utils import timezone
+from event_applications.models import Application
+from django.db.models import Count
 
 # Create your views here.
 
@@ -23,26 +26,36 @@ def register(request):
 
 
 def usher_profile(request):
-    return render(request, 'users/usher_dashboard.html')
+    usher = request.user.usher_profile
+    applications = Application.objects.filter(usher=usher)
+
+    return render(request, 'users/usher_dashboard.html', {'applications': applications})
+
+
+
+
 
 def host_profile(request):
     user = request.user
     profile = user.host_profile
 
-    host_events = Events.objects.filter(host=profile)
+    host_events = Events.objects.filter(host=profile).annotate(applicant_count=Count('applications'))
 
     if request.method == "POST":
         form = CreateEventForm(request.POST, request.FILES)
         if form.is_valid():
-            event = form.save(commit=False)
-            event.host =profile
-            event.save()
-            return redirect('usherly-host')
+            if form.cleaned_data['event_date'] < timezone.now():
+                form.add_error('event_date', 'Date cannot be in the past.')
+            else:   
+                event = form.save(commit=False)
+                event.host =profile
+                event.save()
+                return redirect('usherly-host')
         else:
             print(form.errors) 
     else:
         form = CreateEventForm(instance=profile)
-    return render(request, 'users/host_dashboard.html', {'form': form, 'events': host_events})
+    return render(request, 'users/host_dashboard.html', {'form': form, 'events': host_events, 'now':timezone.now()})
 
 
 
@@ -100,7 +113,7 @@ def upload_profile_picture(request):
             return redirect('usherly-usher')
         except UsherProfile.DoesNotExist:
             try:
-                # Try OrganizerProfile next
+                # Try HostProfile next
                 profile = HostProfile.objects.get(user=request.user)
                 profile.profile_picture = profile_picture
                 profile.save()

@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('core.urls')),
     path('users/', include('users.urls')),
     path('events/', include('eventhub.urls')),
+    path('application/', include('event_applications.urls')),
 ]
 
 if settings.DEBUG:
