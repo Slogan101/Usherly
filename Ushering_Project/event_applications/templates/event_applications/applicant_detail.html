@@ -7,7 +7,7 @@
 <main class="container py-5" style="max-width: 960px;">
 
     <div class="mb-4">
-        <a href="applicants.html" class="text-decoration-none text-primary fw-bold">
+        <a href="{% url 'usherly-applicants' event.id %}" class="text-decoration-none text-primary fw-bold">
             <i class="bi bi-chevron-left"></i> Back to Applicant List
         </a>
     </div>
@@ -111,15 +111,6 @@
             <hr class="my-4">
 
 
-            <!-- 
-            <form method="POST" action="{% url 'usherly-accept-reject' application.id %}">
-                {% csrf_token %}
-                <button type="submit" name="action" value="accept">TEST ACCEPT</button>
-                <button type="submit" name="action" value="accept">Accept</button>
-                <button type="submit" name="action" value="reject">Reject</button>
-            </form> -->
-
-
             {% if application.status == 'pending' %}
             <form method="POST" id="statusForm" action="{% url 'usherly-accept-reject' application.id %}">
                 {% csrf_token %}
@@ -149,25 +140,7 @@
 </main>
 
 
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('statusForm');
-        const acceptBtn = document.getElementById('acceptBtn');
-        const rejectBtn = document.getElementById('rejectBtn');
 
-        acceptBtn.addEventListener('click', function () {
-            acceptBtn.textContent = 'Accepted';
-            acceptBtn.disabled = true;
-            rejectBtn.disabled = true;
-        });
-
-        rejectBtn.addEventListener('click', function () {
-            rejectBtn.textContent = 'Rejected';
-            rejectBtn.disabled = true;
-            acceptBtn.disabled = true;
-        });
-    });
-</script> -->
 
 
 

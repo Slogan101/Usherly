@@ -73,17 +73,6 @@ class RoleBasedLoginView(LoginView):
         return reverse_lazy('usherly-home')
 
 
-# def edit_profile(request):
-#     profile = get_object_or_404(UsherProfile, user=request.user)
-#     if request.method == 'POST':
-#         form = UsherUpdateForm(request.POST, request.FILES, instance=profile)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, f"Profile Updated")
-#             return redirect('usherly-usher')
-#     else:
-#         form = UsherUpdateForm(instance=profile)
-#     return render(request, 'users/edit_profile.html', {'form':form})
 
 def edit_profile(request):
     user = request.user

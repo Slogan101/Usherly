@@ -1,0 +1,232 @@
+{% extends 'core/base.html' %}
+{% block content %}
+
+
+<main class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-5">
+            <div id="post-event" class="card">
+                <div class="card-body p-4">
+                    <h3 class="card-title mb-4">Update Event</h3>
+                    <form id="post-event-form" enctype="multipart/form-data" method="POST" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="eventImage" class="form-label">Event Banner</label>
+                            <input type="file" name="event_image" class="form-control" id="eventImage" accept="image/*">
+
+                            <!-- Image preview box -->
+                             {% if event.event_image %}
+                            <div class="mt-3">
+                                <img id="imagePreview" src="{{ event.event_image.url }}" alt="Image Preview" class="img-fluid rounded"
+                                    style="max-height: 200px; object-fit: cover; width: 100%;">
+                            </div>
+                            {% else %}
+                                <div class="mt-3">
+                                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid rounded d-none"
+                                    style="max-height: 200px; object-fit: cover; width: 100%;">
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventTitle" class="form-label">Event Title</label>
+                            <input type="text" name="title" class="form-control" id="eventTitle" value="{{ event.title}}" required>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="eventType" class="form-label">Event Type</label>
+                                <select id="eventType" name="event_type" class="form-select" required>
+                                    {% if event.event_type == 'corporate' %}
+                                    <option value="corporate" selected>Corporate</option>
+                                    {% elif event.event_type == 'wedding' %}
+                                    <option value="wedding" selected>Wedding</option>
+                                    {% elif event.event_type == 'concert' %}
+                                    <option value="concert" selected>Concert</option>
+                                    {% elif event.event_type == 'burial' %}
+                                    <option value="burial" selected>Burial/Funeral</option>
+                                    {% elif event.event_type == 'birthday' %}
+                                    <option value="birthday" selected>Birthday Party</option>
+                                    {% elif event.event_type == 'conference' %}
+                                    <option value="conference" selected>Conference</option>
+                                    {% elif event.event_type == 'religious' %}
+                                    <option value="religious" selected>Religious</option>
+                                    {% elif event.event_type == 'school' %}
+                                    <option value="school" selected>School/Campus</option>
+                                    {% elif event.event_type == 'private' %}
+                                    <option value="private" selected>Private Party</option>
+                                    {% elif event.event_type == 'entertainment' %}
+                                    <option value="entertainment" selected>Entertainment</option>
+                                    {% else %}
+                                    <option value="" selected disabled>Select Event Type</option>
+                                    {% endif %}
+                                
+                                    <!-- Render the rest of the options without selected -->
+                                    <option value="corporate">Corporate</option>
+                                    <option value="wedding">Wedding</option>
+                                    <option value="concert">Concert</option>
+                                    <option value="burial">Burial/Funeral</option>
+                                    <option value="birthday">Birthday Party</option>
+                                    <option value="conference">Conference</option>
+                                    <option value="religious">Religious</option>
+                                    <option value="school">School/Campus</option>
+                                    <option value="private">Private Party</option>
+                                    <option value="entertainment">Entertainment</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="eventLocation" class="form-label">Location</label>
+
+                                <select name="state" class="form-select" required>
+                                    {% if event.state == 'abia' %}
+                                    <option value="abia" selected>Abia</option>
+                                    {% elif event.state == 'adamawa' %}
+                                    <option value="adamawa" selected>Adamawa</option>
+                                    {% elif event.state == 'akwa_ibom' %}
+                                    <option value="akwa_ibom" selected>Akwa Ibom</option>
+                                    {% elif event.state == 'anambra' %}
+                                    <option value="anambra" selected>Anambra</option>
+                                    {% elif event.state == 'bauchi' %}
+                                    <option value="bauchi" selected>Bauchi</option>
+                                    {% elif event.state == 'bayelsa' %}
+                                    <option value="bayelsa" selected>Bayelsa</option>
+                                    {% elif event.state == 'benue' %}
+                                    <option value="benue" selected>Benue</option>
+                                    {% elif event.state == 'borno' %}
+                                    <option value="borno" selected>Borno</option>
+                                    {% elif event.state == 'cross_river' %}
+                                    <option value="cross_river" selected>Cross River</option>
+                                    {% elif event.state == 'delta' %}
+                                    <option value="delta" selected>Delta</option>
+                                    {% elif event.state == 'ebonyi' %}
+                                    <option value="ebonyi" selected>Ebonyi</option>
+                                    {% elif event.state == 'edo' %}
+                                    <option value="edo" selected>Edo</option>
+                                    {% elif event.state == 'ekiti' %}
+                                    <option value="ekiti" selected>Ekiti</option>
+                                    {% elif event.state == 'enugu' %}
+                                    <option value="enugu" selected>Enugu</option>
+                                    {% elif event.state == 'gombe' %}
+                                    <option value="gombe" selected>Gombe</option>
+                                    {% elif event.state == 'imo' %}
+                                    <option value="imo" selected>Imo</option>
+                                    {% elif event.state == 'jigawa' %}
+                                    <option value="jigawa" selected>Jigawa</option>
+                                    {% elif event.state == 'kaduna' %}
+                                    <option value="kaduna" selected>Kaduna</option>
+                                    {% elif event.state == 'kano' %}
+                                    <option value="kano" selected>Kano</option>
+                                    {% elif event.state == 'katsina' %}
+                                    <option value="katsina" selected>Katsina</option>
+                                    {% elif event.state == 'kebbi' %}
+                                    <option value="kebbi" selected>Kebbi</option>
+                                    {% elif event.state == 'kogi' %}
+                                    <option value="kogi" selected>Kogi</option>
+                                    {% elif event.state == 'kwara' %}
+                                    <option value="kwara" selected>Kwara</option>
+                                    {% elif event.state == 'lagos' %}
+                                    <option value="lagos" selected>Lagos</option>
+                                    {% elif event.state == 'nasarawa' %}
+                                    <option value="nasarawa" selected>Nasarawa</option>
+                                    {% elif event.state == 'niger' %}
+                                    <option value="niger" selected>Niger</option>
+                                    {% elif event.state == 'ogun' %}
+                                    <option value="ogun" selected>Ogun</option>
+                                    {% elif event.state == 'ondo' %}
+                                    <option value="ondo" selected>Ondo</option>
+                                    {% elif event.state == 'osun' %}
+                                    <option value="osun" selected>Osun</option>
+                                    {% elif event.state == 'oyo' %}
+                                    <option value="oyo" selected>Oyo</option>
+                                    {% elif event.state == 'plateau' %}
+                                    <option value="plateau" selected>Plateau</option>
+                                    {% elif event.state == 'rivers' %}
+                                    <option value="rivers" selected>Rivers</option>
+                                    {% elif event.state == 'sokoto' %}
+                                    <option value="sokoto" selected>Sokoto</option>
+                                    {% elif event.state == 'taraba' %}
+                                    <option value="taraba" selected>Taraba</option>
+                                    {% elif event.state == 'yobe' %}
+                                    <option value="yobe" selected>Yobe</option>
+                                    {% elif event.state == 'zamfara' %}
+                                    <option value="zamfara" selected>Zamfara</option>
+                                    {% elif event.state == 'fct' %}
+                                    <option value="fct" selected>FCT - Abuja</option>
+                                    {% else %}
+                                    <option value="" selected disabled>Select State</option>
+                                    {% endif %}
+                                
+                                    <!-- Render all options again (none will be selected unless JS changes them) -->
+                                    <option value="abia">Abia</option>
+                                    <option value="adamawa">Adamawa</option>
+                                    <option value="akwa_ibom">Akwa Ibom</option>
+                                    <option value="anambra">Anambra</option>
+                                    <option value="bauchi">Bauchi</option>
+                                    <option value="bayelsa">Bayelsa</option>
+                                    <option value="benue">Benue</option>
+                                    <option value="borno">Borno</option>
+                                    <option value="cross_river">Cross River</option>
+                                    <option value="delta">Delta</option>
+                                    <option value="ebonyi">Ebonyi</option>
+                                    <option value="edo">Edo</option>
+                                    <option value="ekiti">Ekiti</option>
+                                    <option value="enugu">Enugu</option>
+                                    <option value="gombe">Gombe</option>
+                                    <option value="imo">Imo</option>
+                                    <option value="jigawa">Jigawa</option>
+                                    <option value="kaduna">Kaduna</option>
+                                    <option value="kano">Kano</option>
+                                    <option value="katsina">Katsina</option>
+                                    <option value="kebbi">Kebbi</option>
+                                    <option value="kogi">Kogi</option>
+                                    <option value="kwara">Kwara</option>
+                                    <option value="lagos">Lagos</option>
+                                    <option value="nasarawa">Nasarawa</option>
+                                    <option value="niger">Niger</option>
+                                    <option value="ogun">Ogun</option>
+                                    <option value="ondo">Ondo</option>
+                                    <option value="osun">Osun</option>
+                                    <option value="oyo">Oyo</option>
+                                    <option value="plateau">Plateau</option>
+                                    <option value="rivers">Rivers</option>
+                                    <option value="sokoto">Sokoto</option>
+                                    <option value="taraba">Taraba</option>
+                                    <option value="yobe">Yobe</option>
+                                    <option value="zamfara">Zamfara</option>
+                                    <option value="fct">FCT - Abuja</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventDate" class="form-label">Date & Time</label>
+                            <input type="datetime-local" name="event_date" value="{{ event.event_date|date:'Y-m-d\\TH:i' }}" min="{{ now|date:'Y-m-d\TH:i' }}"
+                                class="form-control" id="eventDate" required>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="durationHours" class="form-label">Duration (hours)</label>
+                                <input type="number" name="event_duration" class="form-control" id="durationHours"
+                                    value="{{ event.event_duration }}" min="1" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="payAmount" class="form-label">Pay per Usher (₦)</label>
+                                <input type="number" name="pay_amount" class="form-control" id="payAmount" min="0"
+                                   value="{{ event.pay_amount }}" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="eventDescription" class="form-label">Description</label>
+                            <textarea id="eventDescription" name="event_description" class="form-control" rows="4"
+                                required>{{ event.event_description }}</textarea>
+                        </div>
+
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</main>
+
+
+{% endblock content %}

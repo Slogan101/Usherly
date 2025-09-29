@@ -167,8 +167,8 @@
                                                 <i class="bi bi-people-fill me-2"></i>View Applicants
                                             </a>
                                         </li>
-                                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil-fill me-2"></i>Edit Event</a></li>
-                                        <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash-fill me-2"></i>Delete
+                                        <li><a class="dropdown-item" href="{% url 'usherly-event-edit' event.id %}"><i class="bi bi-pencil-fill me-2"></i>Edit Event</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'usherly-event-delete' event.id %}"><i class="bi bi-trash-fill me-2"></i>Delete
                                                 Event</a></li>
                                     </ul>
                                 </div>
