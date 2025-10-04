@@ -66,3 +66,24 @@ STATUS_CHOICES = (
         ('accepted', 'Accepted'),
         ('rejected', 'Rejected'),
     )
+
+
+
+PAYMENT_TYPES = (
+    ('subscription', 'Subscription'),
+    ('booking_fee', 'Booking Fee'),
+    ('ticket', 'Ticket'),
+)
+
+
+PAYMENT_STATUS = (
+    ('pending', 'Pending'),
+    ('success', 'Success'),
+    ('failed', 'Failed'),
+)
+
+EVENT_MODES = (
+    ('ushering_only', 'Ushering_Only'),
+    ('ticketing_only', 'Ticketing_Only'),
+    ('ushering_and_ticketing', 'Ushering_And_Ticketing'),
+)

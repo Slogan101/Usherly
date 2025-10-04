@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'eventhub.apps.EventhubConfig',
     'event_applications.apps.EventApplicationsConfig',
+    'payment.apps.PaymentConfig',
+    
 ]
 
 MIDDLEWARE = [

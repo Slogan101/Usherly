@@ -99,16 +99,19 @@
                                 <i class="bi bi-geo-alt"></i> {{ event.get_state_display }}, Nigeria <br>
                                 <i class="bi bi-calendar"> {{ event.event_date|date:"d/m/Y"}}</i> 
                             </p>
+                            {% if event.event_mode != 'ticketing_only' %}
                             <h6 class="fw-bold">Pay: ₦{{ event.pay_amount|floatformat:0|intcomma }}</h6>
+                            {% endif %}
                         </div>
                         <div class="card-footer bg-white border-0 pb-3">
                             <div class="d-flex justify-content-between">
                                 <a href="{% url 'usherly-detail' event.id %}" class="btn btn-sm btn-outline-primary">View
                                     Details</a>
-                                <!-- <button class="btn btn-sm btn-primary apply-btn" data-event-id="{{ event.id }}"
-                                    data-event-title="{{ event.title }}">
-                                    Apply
-                                </button> -->
+                                    {% if event.tickets.all %}
+                                <a href="{% url 'usherly-ticket' event.id %}" class="btn btn-sm btn-primary apply-btn">
+                                    Get Ticket
+                                </a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -2,7 +2,7 @@ from django.urls import path
 from users import views as user_views
 from django.contrib.auth import views as auth_views
 from .forms import LoginForm
-from .views import RoleBasedLoginView
+from .views import RoleBasedLoginView, EditProfileView
 
 
 urlpatterns = [
@@ -12,7 +12,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='usherly-logout'),
     path('dashboard/usher/', user_views.usher_profile, name='usherly-usher'),
     path('dashboard/host/', user_views.host_profile, name='usherly-host'),
-    path('edit-profile/', user_views.edit_profile, name='usherly-edit'),
+    path('edit-profile/', EditProfileView.as_view(), name='usherly-edit'),
     path('upload-picture/', user_views.upload_profile_picture, name='upload_profile_picture'),
 ]
 

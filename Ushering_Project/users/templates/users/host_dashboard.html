@@ -2,22 +2,28 @@
 {% load static %}
 {% block content %}
 
+<style>
+    /* Optional: Add a little style for the remove button in the ticketing section */
+    .ticket-type-row .btn-close {
+        height: 1em;
+        width: 1em;
+    }
+</style>
+
 <main class="container py-5">
     <div class="row g-5">
         <div class="col-lg-5">
             <div id="post-event" class="card">
                 <div class="card-body p-4">
                     <h3 class="card-title mb-4">Post a New Event</h3>
-                    <form id="post-event-form" enctype="multipart/form-data" method="POST" novalidate>
+                    <form id="post-event-form" enctype="multipart/form-data" method="POST">
                         {% csrf_token %}
+                        
                         <div class="mb-3">
                             <label for="eventImage" class="form-label">Event Banner</label>
                             <input type="file" name="event_image" class="form-control" id="eventImage" accept="image/*">
-
-                            <!-- Image preview box -->
                             <div class="mt-3">
-                                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid rounded d-none"
-                                    style="max-height: 200px; object-fit: cover; width: 100%;">
+                                <img id="imagePreview" src="#" alt="Image Preview" class="img-fluid rounded d-none" style="max-height: 200px; object-fit: cover; width: 100%;">
                             </div>
                         </div>
                         <div class="mb-3">
@@ -42,7 +48,6 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="eventLocation" class="form-label">Location</label>
-
                                 <select name="state" class="form-select" required>
                                     <option value="abia">Abia</option>
                                     <option value="adamawa">Adamawa</option>
@@ -86,50 +91,77 @@
                         </div>
                         <div class="mb-3">
                             <label for="eventDate" class="form-label">Date & Time</label>
-                            <input type="datetime-local" name="event_date" min="{{ now|date:'Y-m-d\TH:i' }}"
-                                class="form-control" id="eventDate" required>
-                        </div>
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label for="durationHours" class="form-label">Duration (hours)</label>
-                                <input type="number" name="event_duration" class="form-control" id="durationHours"
-                                    min="1" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="payAmount" class="form-label">Pay per Usher (₦)</label>
-                                <input type="number" name="pay_amount" class="form-control" id="payAmount" min="0"
-                                    required>
-                            </div>
+                            <input type="datetime-local" name="event_date" min="{{ now|date:'Y-m-d\TH:i' }}" class="form-control" id="eventDate" required>
                         </div>
                         <div class="mb-3">
                             <label for="eventDescription" class="form-label">Description</label>
-                            <textarea id="eventDescription" name="event_description" class="form-control" rows="4"
-                                required></textarea>
+                            <textarea id="eventDescription" name="event_description" class="form-control" rows="4" required></textarea>
                         </div>
+
                         <hr>
-                        <h5 class="mb-3">Booking Details</h5>
-                        <div class="row g-3 mb-3">
-                            <div class="col-md-6">
-                                <label for="numUshers" class="form-label">Ushers Required</label>
-                                <input type="number" class="form-control" id="numUshers" min="1" required>
+                        
+                        <div class="mb-4">
+                            <label for="eventMode" class="form-label fw-bold">Select Event Mode</label>
+                            <select id="eventMode" name="event_mode" class="form-select form-select-lg" required>
+                                <option value="" selected disabled>Choose how this event will operate...</option>
+                                <option value="ushering_only">Ushering Only</option>
+                                <option value="ticketing_only">Ticketing Only</option>
+                                <option value="ushering_and_ticketing">Ushering + Ticketing</option>
+                            </select>
+                        </div>
+
+                        <div id="usherBookingSection" class="d-none">
+                            <h5 class="mb-3">Usher Booking Details</h5>
+                             <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="durationHours" class="form-label">Duration (hours)</label>
+                                    <input type="number" name="event_duration" class="form-control" id="durationHours" min="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="payAmount" class="form-label">Pay per Usher (₦)</label>
+                                    <input type="number" name="pay_amount" class="form-control" id="payAmount" min="0">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label for="bookingFee" class="form-label">Booking Fee / Hire (₦)</label>
-                                <input type="number" class="form-control" id="bookingFee" value="500" readonly>
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="numUshers" class="form-label">Ushers Required</label>
+                                    <input type="number" name="ushers_required" class="form-control" id="numUshers" min="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="bookingFee" class="form-label">Booking Fee / Hire (₦)</label>
+                                    <input type="number" name="booking_fee_per_hire" class="form-control" id="bookingFee" value="200" readonly>
+                                </div>
+                            </div>
+                            <div id="fee-breakdown" class="card bg-light p-3 d-none">
+                                <p class="mb-1"><strong>Total Booking Fee Calculation:</strong></p>
+                                <ul class="list-unstyled mb-0">
+                                    <li><span id="num-ushers-display">0</span> Ushers &times; ₦<span id="fee-per-hire-display">200</span></li>
+                                    <li class="fw-bold fs-5">Total: ₦<span id="total-booking-fee">0</span></li>
+                                </ul>
+                                <small class="text-muted mt-2">This is a one-time fee to post your event.</small>
                             </div>
                         </div>
-                        <div id="fee-breakdown" class="card bg-light p-3 d-none">
-                            <p class="mb-1"><strong>Total Booking Fee Calculation:</strong></p>
-                            <ul class="list-unstyled mb-0">
-                                <li><span id="num-ushers-display">0</span> Ushers &times; ₦<span
-                                        id="fee-per-hire-display">500</span></li>
-                                <li class="fw-bold fs-5">Total: ₦<span id="total-booking-fee">0</span></li>
-                            </ul>
-                            <small class="text-muted mt-2">This is a one-time fee to post your event and access
-                                applicants.</small>
+                        
+                        <div id="ticketingSection" class="d-none">
+                            <h5 class="mb-3">Ticket Types</h5>
+                            <div class="alert alert-info small">
+                                Add one or more ticket types for your event.
+                            </div>
+                            <div id="ticketTypesContainer" class="vstack gap-3">
+                                </div>
+                            <button type="button" id="addTicketTypeBtn" class="btn btn-outline-primary mt-3">
+                                <i class="bi bi-plus-circle me-2"></i>Add Ticket Type
+                            </button>
+                            <div class="card bg-light p-3 mt-4">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold">Total Tickets Available:</span>
+                                    <span class="fs-4 fw-bold text-primary" id="totalTicketsDisplay">0</span>
+                                </div>
+                            </div>
                         </div>
+                        
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg">Pay & Post Event</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Create Event</button>
                         </div>
                     </form>
                 </div>
@@ -175,15 +207,12 @@
                             </div>
                         </div>
                     </div>
-                    
                     {% endfor %}
                 </div>
-
                 {% else %}
                 <div id="host-event-list" class="vstack gap-3">
                     <div class="text-center p-5 card" id="no-events-placeholder">
-                        <p class="text-muted">You have not posted any events yet. Use the form to create
-                            one.</p>
+                        <p class="text-muted">You have not posted any events yet. Use the form to create one.</p>
                     </div>
                 </div>
                 {% endif %}
@@ -203,25 +232,169 @@
 </div>
 
 <script>
+    // --- EXISTING SCRIPT FOR IMAGE PREVIEW ---
     const imageInput = document.getElementById('eventImage');
     const imagePreview = document.getElementById('imagePreview');
 
     imageInput.addEventListener('change', function () {
         const file = this.files[0];
-
         if (file) {
             const reader = new FileReader();
-
             reader.addEventListener('load', function () {
                 imagePreview.src = reader.result;
                 imagePreview.classList.remove('d-none');
             });
-
             reader.readAsDataURL(file);
         } else {
             imagePreview.src = '#';
             imagePreview.classList.add('d-none');
         }
+    });
+
+    // --- NEW & MERGED SCRIPT FOR DYNAMIC FORM LOGIC ---
+    document.addEventListener('DOMContentLoaded', function () {
+        // Elements for Usher Booking
+        const numUshersInput = document.getElementById('numUshers');
+        const feeBreakdown = document.getElementById('fee-breakdown');
+        const totalFeeDisplay = document.getElementById('total-booking-fee');
+        const numUshersDisplay = document.getElementById('num-ushers-display');
+        const feePerHireDisplay = document.getElementById('fee-per-hire-display');
+        const bookingFeeInput = document.getElementById('bookingFee');
+
+        // Elements for Dynamic Sections
+        const eventModeSelect = document.getElementById('eventMode');
+        const usherBookingSection = document.getElementById('usherBookingSection');
+        const ticketingSection = document.getElementById('ticketingSection');
+        
+        // Elements for Ticketing
+        const addTicketTypeBtn = document.getElementById('addTicketTypeBtn');
+        const ticketTypesContainer = document.getElementById('ticketTypesContainer');
+        const totalTicketsDisplay = document.getElementById('totalTicketsDisplay');
+        let ticketTypeIndex = 0;
+        
+        // --- FUNCTIONS ---
+
+        // Controls visibility of Usher and Ticket sections
+        function updateFormVisibility() {
+            const selectedMode = eventModeSelect.value;
+            const showUshers = selectedMode === 'ushering_only' || selectedMode === 'ushering_and_ticketing';
+            const showTickets = selectedMode === 'ticketing_only' || selectedMode === 'ushering_and_ticketing';
+
+            usherBookingSection.classList.toggle('d-none', !showUshers);
+            ticketingSection.classList.toggle('d-none', !showTickets);
+        }
+
+        // Adds a new row for a ticket type
+
+        function addTicketRow() {
+            ticketTypeIndex++;
+            const newRow = document.createElement('div');
+            newRow.classList.add('card', 'p-3', 'ticket-type-row');
+
+            newRow.innerHTML = `
+        <div class="row g-2 align-items-center">
+            <div class="col-12 col-sm-5">
+                <label class="form-label visually-hidden">Ticket Name</label>
+                <input type="text" name="ticket_type[]" class="form-control" placeholder="Ticket Name (e.g., Regular)" required>
+            </div>
+            <div class="col-6 col-sm-3">
+                <label class="form-label visually-hidden">Price</label>
+                <div class="input-group">
+                    <span class="input-group-text">₦</span>
+                    <input type="number" name="ticket_price[]" class="form-control" placeholder="Price" min="0" required>
+                </div>
+            </div>
+            <div class="col-4 col-sm-3">
+                <label class="form-label visually-hidden">Quantity</label>
+                <input type="number" name="ticket_quantity[]" class="form-control ticket-quantity-input" placeholder="Qty" min="1" required>
+            </div>
+            <div class="col-2 col-sm-1 text-end">
+                <button type="button" class="btn-close remove-ticket-btn" aria-label="Remove"></button>
+            </div>
+        </div>
+    `;
+
+            document.getElementById('ticketTypesContainer').appendChild(newRow);
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // Calculates total tickets from all quantity fields
+        function updateTotalTickets() {
+            let total = 0;
+            const quantityInputs = ticketTypesContainer.querySelectorAll('.ticket-quantity-input');
+            quantityInputs.forEach(input => {
+                total += parseInt(input.value) || 0;
+            });
+            totalTicketsDisplay.textContent = total.toLocaleString();
+        }
+
+        // Your existing function to calculate the usher booking fee
+        function updateFeeBreakdown() {
+            const numUshers = parseInt(numUshersInput.value) || 0;
+            const feePerUsher = parseInt(bookingFeeInput.value) || 0;
+            const totalFee = numUshers * feePerUsher;
+
+            if (numUshers > 0) {
+                feeBreakdown.classList.remove('d-none');
+                numUshersDisplay.textContent = numUshers;
+                feePerHireDisplay.textContent = feePerUsher.toLocaleString();
+                totalFeeDisplay.textContent = totalFee.toLocaleString();
+            } else {
+                feeBreakdown.classList.add('d-none');
+            }
+        }
+        
+        // --- EVENT LISTENERS ---
+
+        // Main controller
+        eventModeSelect.addEventListener('change', updateFormVisibility);
+
+        // Usher booking fee calculation
+        if (numUshersInput) {
+            numUshersInput.addEventListener('input', updateFeeBreakdown);
+        }
+
+        // Add ticket row
+        addTicketTypeBtn.addEventListener('click', addTicketRow);
+
+        // Use event delegation for dynamic ticket rows
+        ticketTypesContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-ticket-btn')) {
+                e.target.closest('.ticket-type-row').remove();
+                updateTotalTickets();
+                // You might need more complex logic here for Django formsets to re-index forms
+            }
+        });
+
+        ticketTypesContainer.addEventListener('input', (e) => {
+            if (e.target.classList.contains('ticket-quantity-input')) {
+                updateTotalTickets();
+            }
+        });
+        
+        // Add hidden inputs required for Django formset management
+        const totalFormsInput = document.createElement('input');
+        totalFormsInput.type = 'hidden';
+        totalFormsInput.name = 'form-TOTAL_FORMS';
+        totalFormsInput.value = '0';
+        document.getElementById('post-event-form').appendChild(totalFormsInput);
+
+        const initialFormsInput = document.createElement('input');
+        initialFormsInput.type = 'hidden';
+        initialFormsInput.name = 'form-INITIAL_FORMS';
+        initialFormsInput.value = '0';
+        document.getElementById('post-event-form').appendChild(initialFormsInput);
     });
 </script>
 

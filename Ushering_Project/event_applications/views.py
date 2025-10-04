@@ -3,15 +3,24 @@ from django.views.generic import DetailView
 from django.contrib import messages
 from eventhub.models import Events
 from event_applications.models import Application
+from django.contrib.auth.decorators import login_required, user_passes_test
+
 from users.models import HostProfile
 
 # Create your views here.
 
 
 
-
+@login_required
+@user_passes_test(lambda u: hasattr(u, 'usher_profile'))
 def apply_for_event(request, event_id):
     event = get_object_or_404(Events, id=event_id)
+
+    if not hasattr(request.user, 'usher_profile'):
+        messages.error(request, "Only ushers can apply for events.")
+        return redirect('usherly-detail', event_id=event.id)
+    
+    
     usher_profile = request.user.usher_profile  
 
     # Check if application already exists
@@ -25,7 +34,8 @@ def apply_for_event(request, event_id):
     messages.success(request, "Application submitted successfully!")
     return redirect('usherly-detail', event_id=event.id)
 
-
+@login_required
+@user_passes_test(lambda u: hasattr(u, 'host_profile'))
 def view_applicants(request, event_id):
     host_profile = get_object_or_404(HostProfile, user=request.user)
     event = get_object_or_404(Events, id=event_id, host=host_profile)
@@ -34,7 +44,8 @@ def view_applicants(request, event_id):
 
     return render(request, 'event_applications/applicant_list.html', {'applicants':applicants, 'event':event})
 
-
+@login_required
+@user_passes_test(lambda u: hasattr(u, 'host_profile'))
 def applicant_detail(request, event_id, application_id):
     # Get the host profile
     host_profile = get_object_or_404(HostProfile, user=request.user)
@@ -48,7 +59,8 @@ def applicant_detail(request, event_id, application_id):
     return render(request, 'event_applications/applicant_detail.html', {'application': application,'event': event,})
 
 
-
+@login_required
+@user_passes_test(lambda u: hasattr(u, 'host_profile'))
 def usherly_accept_reject_view(request, application_id):
     application = get_object_or_404(Application, id=application_id)
 

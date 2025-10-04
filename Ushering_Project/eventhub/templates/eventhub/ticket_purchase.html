@@ -1,0 +1,86 @@
+{% extends 'core/base.html' %}
+{% load humanize %}
+{% block content %}
+
+<main class="container py-5">
+    <div class="text-center mb-4">
+        <h1 class="fw-bold">Checkout</h1>
+        <a href="{% url 'usherly-ticket' event.id %}" class="text-decoration-none"><i class="bi bi-arrow-left me-1"></i>Back to tickets</a>
+    </div>
+
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <form method="POST" action="/your-payment-processing-url/">
+                        <h4 class="mb-3">Contact Information</h4>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" name="last_name" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="you@example.com" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="email" class="form-label">Confirm email address</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="you@example.com" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm sticky-top" style="top: 20px;">
+                <div class="card-header bg-white">
+                    <h4 class="my-2">Order Summary</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <img src="{{ event.event_image.url }}" alt="Event Image" class="rounded"
+                            style="width: 80px; height: 60px; object-fit: cover;">
+                        <div class="ms-3 flex-grow-1">
+                            <h6 class="mb-0">{{ event.title }}</h6>
+                            <small class="text-muted">{{ ticket.ticket_type }} &times; {{ quantity }}</small>
+                        </div>
+                        <span class="fw-bold">₦{{ base_price|floatformat:0|intcomma }}</span>
+                    </div>
+
+                    <hr>
+
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Subtotal</span>
+                            <strong>₦{{ base_price|floatformat:0|intcomma }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>VAT</span>
+                            <strong>₦{{ tax_amount|floatformat:0|intcomma }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Service fee</span>
+                            <strong>₦{{ service_fee|floatformat:0|intcomma }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <span class="fw-bold">Total (NGN)</span>
+                            <strong class="text-primary fs-5">₦{{ total_price|floatformat:0|intcomma }}</strong>
+                        </li>
+                    </ul>
+                    <button class="w-100 btn btn-primary btn-lg" type="submit">Pay ₦{{ total_price|floatformat:0|intcomma }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+{% endblock content %}

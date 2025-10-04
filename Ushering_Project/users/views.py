@@ -2,10 +2,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import UserRegistrationForm, LoginForm, UsherUpdateForm
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import UsherProfile, HostProfile
 from eventhub.forms import CreateEventForm
-from eventhub.models import Events
+from eventhub.models import Events, Ticket
 from django.utils import timezone
 from event_applications.models import Application
 from django.db.models import Count
@@ -24,7 +27,7 @@ def register(request):
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})
 
-
+@login_required
 def usher_profile(request):
     usher = request.user.usher_profile
     applications = Application.objects.filter(usher=usher)
@@ -34,7 +37,7 @@ def usher_profile(request):
 
 
 
-
+@login_required
 def host_profile(request):
     user = request.user
     profile = user.host_profile
@@ -50,6 +53,20 @@ def host_profile(request):
                 event = form.save(commit=False)
                 event.host =profile
                 event.save()
+
+                ticket_types = request.POST.getlist('ticket_type[]')
+                ticket_prices = request.POST.getlist('ticket_price[]')
+                ticket_quantities = request.POST.getlist('ticket_quantity[]')
+
+                for t_type, price, qty in zip(ticket_types, ticket_prices, ticket_quantities):
+                    if t_type and price and qty:
+                            Ticket.objects.create(
+                                event=event,
+                                ticket_type=t_type,
+                                price=price,
+                                total_quantity=qty,
+                                available_quantity=qty,
+                            )
                 return redirect('usherly-host')
         else:
             print(form.errors) 
@@ -73,24 +90,36 @@ class RoleBasedLoginView(LoginView):
         return reverse_lazy('usherly-home')
 
 
+# @login_required
+# def edit_profile(request):
+#     user = request.user
+#     profile = user.usher_profile
 
-def edit_profile(request):
-    user = request.user
-    profile = user.usher_profile
+#     if request.method == 'POST':
+#         form = UsherUpdateForm(request.POST, request.FILES, instance=profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('usherly-usher')
+#         else:
+#             print(form.errors)  
+#     else:
+#         form = UsherUpdateForm(instance=profile)
 
-    if request.method == 'POST':
-        form = UsherUpdateForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('usherly-usher')
-        else:
-            print(form.errors)  
-    else:
-        form = UsherUpdateForm(instance=profile)
+#     return render(request, 'users/edit_profile.html', {'form': form})
 
-    return render(request, 'users/edit_profile.html', {'form': form})
+class EditProfileView(LoginRequiredMixin, UpdateView):
+    model = UsherProfile
+    form_class =UsherUpdateForm
+    template_name = 'users/edit_profile.html'
+    success_url = reverse_lazy('usherly-usher')
+
+    def get_object(self, queryset=None):
+        # Ensure the user can only edit their own profile
+        return self.request.user.usher_profile
 
 
+
+@login_required
 def upload_profile_picture(request):
     if request.method == 'POST' and request.FILES.get('profile_picture'):
         profile_picture = request.FILES['profile_picture']

@@ -8,7 +8,7 @@
             <div id="post-event" class="card">
                 <div class="card-body p-4">
                     <h3 class="card-title mb-4">Update Event</h3>
-                    <form id="post-event-form" enctype="multipart/form-data" method="POST" novalidate>
+                    <form id="post-event-form" enctype="multipart/form-data" method="POST">
                         {% csrf_token %}
                         <div class="mb-3">
                             <label for="eventImage" class="form-label">Event Banner</label>
@@ -207,6 +207,11 @@
                                     value="{{ event.event_duration }}" min="1" required>
                             </div>
                             <div class="col-md-6">
+                                    <label for="numUshers" class="form-label">Ushers Required</label>
+                                    <input type="number" name="ushers_required" class="form-control" id="numUshers" min="1" 
+                                    value="{{ event.ushers_required }}">
+                                </div>
+                            <div class="col-md-6">
                                 <label for="payAmount" class="form-label">Pay per Usher (₦)</label>
                                 <input type="number" name="pay_amount" class="form-control" id="payAmount" min="0"
                                    value="{{ event.pay_amount }}" required>
@@ -217,6 +222,50 @@
                             <textarea id="eventDescription" name="event_description" class="form-control" rows="4"
                                 required>{{ event.event_description }}</textarea>
                         </div>
+
+                        <div class="mb-4">
+                            <label for="eventMode" class="form-label fw-bold">Select Event Mode</label>
+                            <select id="eventMode" name="event_mode" class="form-select form-select-lg" required>
+                                {% if event.event_mode == 'ushering_only' %}
+                                <option value="ushering_only" selected>Ushering Only</option>
+                                {% elif event.event_mode == 'ticketing_only' %}
+                                <option value="ticketing_only" selected>Ticketing Only</option>
+                                {% elif event.event_mode == 'ushering_and_ticketing' %}
+                                <option value="ushering_and_ticketing" selected>Ushering + Ticketing</option>
+                                {% endif %}
+
+                                <option value="ushering_only">Ushering Only</option>
+                                <option value="ticketing_only">Ticketing Only</option>
+                                <option value="ushering_and_ticketing">Ushering + Ticketing</option>
+                            </select>
+                        </div>
+
+                        {% if tickets %}
+                        <hr>
+                        <h4 class="mb-3">Edit Tickets</h4>
+                        {% for ticket in tickets %}
+                        <div class="card p-3 mb-3">
+                            <input type="hidden" name="ticket_id_{{ forloop.counter }}" value="{{ ticket.id }}">
+                            <div class="mb-2">
+                                <label class="form-label">Ticket Name</label>
+                                <input type="text" name="ticket_type_{{ forloop.counter }}" class="form-control"
+                                    value="{{ ticket.ticket_type }}">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Price (₦)</label>
+                                <input type="number" name="ticket_price_{{ forloop.counter }}" class="form-control" min="0"
+                                    value="{{ ticket.price }}">
+                            </div>
+                            <div class="mb-2">
+                                <label class="form-label">Total Quantity</label>
+                                <input type="number" name="ticket_quantity_{{ forloop.counter }}" class="form-control" min="1"
+                                    value="{{ ticket.total_quantity }}">
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <input type="hidden" name="ticket_count" value="{{ tickets|length }}">
+                        {% endif %}
+
 
 
                         <div class="d-grid mt-4">
